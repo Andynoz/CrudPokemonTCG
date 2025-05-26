@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{prodcuto.nombre}}</title>
+</head>
+<body>
+    <h1>{{prodcuto.nombre}}</h1>
+    <img src="{{prodcuto.image}}" alt="{{prodcuto.nombre}}" witdh="300">
+    <p>Precio: ${{prodcuto.precio}}</p>
+    <p>Descripción: {{prodcuto.descripcion}}</p>
+    <a href="{% url 'lista_prodcutos' %}">Vovler a la lista</a>
+</body>
+</html>
