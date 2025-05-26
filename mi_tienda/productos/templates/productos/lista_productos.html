@@ -7,31 +7,10 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        #resultados_busqueda{
-            list-style: none;
-            padding: 0;
-            margin-top: 5;
-            border: 1px solid #ccc;
-            width: 300px;
-            position: absolute;
-            background-color: white;
-            z-index: 1000;
-        }
-        #resultados_busqueda li {
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-
-        #resultados_busqueda li:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
 </head>
 <body>
 <div class="container mt-4">
-    <h1 class="mb-4 text-center text-warning fw-bold">Cartas Pokémon Disponibles</h1>
+    <h1 class="mb-4 text-center text-danger fw-bold">Cartas Pokémon Disponibles</h1>
 
     <div class="mb-4">
         <input type="text" id="campo_busqueda" class="form-control shadow" placeholder="Buscar cartas Pokémon...">
@@ -42,7 +21,7 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         {% for producto in productos %}
             <div class="col">
-                <div class="card h-100 border-primary shadow-lg">
+                <div class="card h-100 border-danger shadow-lg">
                     <a href="{% url 'detalle_producto' producto.id %}" class="text-decoration-none text-dark">
                         <img src="{{producto.imagen.url}}" alt="{{producto.nombre}}" class="card-img-top p-2" style="height: 250px; object-fit: contain;">
                         <div class="card-body text-center">
@@ -56,6 +35,13 @@
     </div>
 </div>
 
+<footer class="bg-secondary text-center text-white py-5 mt-5">
+    <div class="container">
+        <p class="mb-0">&copy; 2025 PokéTienda TCG — Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+
 <script>
     $(document).ready(function() {
         $('#campo_busqueda').on('input', function() {
@@ -63,18 +49,19 @@
             if (terminoBusqueda.length >= 2) {
                 $.ajax({
                     url: "{% url 'buscar_productos' %}",
-                    data: {'termino': terminoBusqueda},
+                    data: { 'termino': terminoBusqueda },
                     dataType: 'json',
                     success: function(data) {
                         let resultadosHTML = '';
                         if (data.productos.length > 0) {
                             $.each(data.productos, function(index, producto) {
-                                resultadosHTML += '<li class="list-group-item" data-id="' + producto.id + '">' + producto.nombre + ' - $' + producto.precio + '</li>';
+                                resultadosHTML += '<li class="list-group-item list-group-item-action" style="cursor: pointer;" data-id="' + producto.id + '">' + producto.nombre + ' - $' + producto.precio + '</li>';
+
                             });
                         } else {
                             resultadosHTML = '<li class="list-group-item">No se encontraron productos</li>';
                         }
-                        $('resultados_busqueda').html(resultadosHTML).show();
+                        $('#resultados_busqueda').html(resultadosHTML).show();
                     }
                 });
             } else {
